@@ -1,21 +1,25 @@
 package org.example;
 
 
+import org.example.dao.*;
+import org.example.servise.*;
+
 public class Main {
     public static void main(String[] args) {
         Database.getInstance();
 
-        ClientService clientService = new ClientService();
-        long id = clientService.create("Маруся");
-        System.out.println("Created " + id + " - " + clientService.getById(id));
-        clientService.setName(id, "Маруся2");
-        System.out.println("Updated " + id + " - " + clientService.getById(id));
-        clientService.listAll().forEach(c ->
+        ClientDaoService dao = new ClientDaoServiceImpl();
+        ClientService service = new ClientServiceImpl(dao);
+        long id = service.create("Маруся");
+        System.out.println("Created " + id + " - " + service.getById(id));
+        service.setName(id, "Маруся2");
+        System.out.println("Updated " + id + " - " + service.getById(id));
+        service.listAll().forEach(c ->
                 System.out.println(c.getId() + " " + c.getName())
         );
-        clientService.deleteById(id);
+        service.deleteById(id);
         System.out.println("Deleted " + id);
-        clientService.listAll().forEach(c ->
+        service.listAll().forEach(c ->
                 System.out.println(c.getId() + " " + c.getName())
         );
     }
